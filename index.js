@@ -21,7 +21,7 @@ var BASE_URL = 'https://zloekino.su';
 
 // Создаем сервис иконка с плагином на Заглавной.
 require('movian/service').create(plugin.title, PREFIX + ':start', 'video', true, LOGO);
-
+// "ПЕРВАЯ СТРАНИЦА ГЛАВНАЯ"
 // Главная страница плагина URI zloekino:start
 // так как нет докуминтации к api 2
 // пример api 1 > plugin.addURI(PREFIX + ':start', function(page)
@@ -105,6 +105,27 @@ new page.Route(PREFIX + ':list:(.*)', function(page, href) {
   loader();
 });
 
+new page.Route(PREFIX + ':moviepage:(.*)', function(page, data) {
+  data = JSON.parse(data);
+  page.metadata.logo = data.icon;
+  page.metadata.icon = data.icon;
+  console.log({data: data});
+  var resp = http.request(data.url).toString();
+  page.appendItem('', 'separator', {
+    title: 'Video:',
+  });
+  uri ='';
+  page.appendItem(PREFIX + ':play:' + uri, 'video', {
+    title: data.title,
+    icon: data.icon,
+    url: 'url',
+  }); // .bindVideoMetadata({filename: data.filename})
+  // .bindVideoMetadata({
+  //   title: data.title_en ? data.title_en : data.title,
+  //   year: +data.year,
+  // });
+  page.type = 'directory';
+});
 
 function scrapeList(document) {
   var returnValue = [];
