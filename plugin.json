@@ -1,0 +1,12 @@
+{
+    "type": "ecmascript",
+    "apiversion": 2,
+    "id": "zloekino",
+    "file": "index.js",
+    "category": "video",
+    "title": "zloekino",
+    "showtimeVersion": "5",
+    "version": "0.0.1",
+    "author": "Buksa",
+    "icon": "logo.png"
+}
