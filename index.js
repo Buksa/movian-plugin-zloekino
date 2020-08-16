@@ -21,7 +21,7 @@ var BASE_URL = 'https://zloekino.su';
 
 // Создаем сервис иконка с плагином на Заглавной.
 require('movian/service').create(plugin.title, PREFIX + ':start', 'video', true, LOGO);
-// "ПЕРВАЯ СТРАНИЦА ГЛАВНАЯ"
+// "1 СТРАНИЦА ГЛАВНАЯ"
 // Главная страница плагина URI zloekino:start
 // так как нет докуминтации к api 2
 // пример api 1 > plugin.addURI(PREFIX + ':start', function(page)
@@ -75,7 +75,7 @@ new page.Route(PREFIX + ':start', function(page) {
   page.loading = false;
 });
 
-// "ВТОРОЯ СТРАНИЦА СПИСОК"
+// "2 СТРАНИЦА СПИСОК"
 // обработчик списков URI zloekino:list:/series/fresh
 new page.Route(PREFIX + ':list:(.*)', function(page, href) {
   page.loading = true;
@@ -105,6 +105,8 @@ new page.Route(PREFIX + ':list:(.*)', function(page, href) {
   loader();
 });
 
+// "3 СТРАНИЦА с кино/сериалом"
+// обработчик списков URI zloekino:moviepage:{list[i]}
 new page.Route(PREFIX + ':moviepage:(.*)', function(page, data) {
   data = JSON.parse(data);
   page.metadata.logo = data.icon;
@@ -127,6 +129,14 @@ new page.Route(PREFIX + ':moviepage:(.*)', function(page, data) {
   page.type = 'directory';
 });
 
+new page.Route(PREFIX + ':play:(.*)', function(page, data) {
+  var canonicalUrl = PREFIX + ':play:' + data;
+  page.loading = true;
+  page.type = 'directory';
+  //  page.type = 'video';
+  data = JSON.parse(data);
+});
+
 function scrapeList(document) {
   var returnValue = [];
   if (document.getElementByClassName('channel-gallery').length) {
@@ -145,7 +155,7 @@ function scrapeList(document) {
       });
     }
   }
-  returnValue.endOfData = document.getElementByClassName('pager').length ? document.getElementByClassName('pager')[0].children[document.getElementByClassName('pager')[0].children.length - 2].nodeName !== 'a' : true;
+  returnValue.endOfData = document.getElementByClassName('pager').length ? document.getElementByClassName('pager')[0].children[document.getElementByClassName('pager')[0].children.length - 1].nodeName !== 'a' : true;
   return returnValue;
 }
 
